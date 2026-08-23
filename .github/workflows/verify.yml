@@ -1,0 +1,27 @@
+name: Verify documentation
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check required coursework files
+        run: |
+          test -f README.md
+          test -f task-1-literature-review/README.md
+          test -f task-1-literature-review/review-notes.md
+          test -f task-2-uml-case-study/README.md
+          test -f task-2-uml-case-study/diagrams.md
+          test -f references.md
+      - name: Reject unfinished placeholders in public coursework
+        run: |
+          if grep -n -E '\b(TBD|TODO)\b' README.md references.md task-1-literature-review/*.md task-2-uml-case-study/*.md; then
+            echo 'Unfinished placeholder found in public coursework'
+            exit 1
+          fi
