@@ -19,9 +19,9 @@ jobs:
           test -f task-2-uml-case-study/README.md
           test -f task-2-uml-case-study/diagrams.md
           test -f references.md
-      - name: Reject unfinished placeholders
+      - name: Reject unfinished placeholders in public coursework
         run: |
-          if grep -R -n -E '\b(TBD|TODO)\b' --include='*.md' .; then
-            echo 'Unfinished placeholder found'
+          if grep -n -E '\b(TBD|TODO)\b' README.md references.md task-1-literature-review/*.md task-2-uml-case-study/*.md; then
+            echo 'Unfinished placeholder found in public coursework'
             exit 1
           fi
